@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>HPD MY PFGF</title>
+
+<style>
+body {
+  background: #E6A0B4;
+  color: #fff;
+  text-align: center;
+  font-family: sans-serif;
+  margin-top: 100px;
+}
+
+
+input#code {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: 2px solid #60afe7;
+    background: rgba(63, 16, 29, 0.155); 
+    color: #fff;
+    outline: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(230,160,180,0.3);
+  }
+  
+  input#code::placeholder {
+    color: #5f3c45; 
+    opacity: 0.8;
+  }
+  
+  input#code:focus {
+    border-color: #a49599;
+    box-shadow: 0 6px 15px rgba(199,91,122,0.4);
+    background: rgba(230, 160, 180, 0.15);
+  }
+button {
+    background: linear-gradient(135deg, #81243f, #C75B7A);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(199, 91, 122, 0.35);
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(199, 91, 122, 0.5);
+  }
+  
+  button:active {
+    transform: scale(0.96);
+  }
+#love {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="login">
+  <h2>اكتبي مواليدج ورده</h2>
+  <input type="password" id="code" placeholder="هنا كتبيهن شبيج صافنه" onkeydown="if(event.key==='Enter') check()">
+  <br><br>
+  <button onclick="check()">دخول</button>
+</div>
+<div id="love">
+    <h2 id="title"></h2>
+    <p id="msg1"></p>
+    <p id="msg2"></p>
+  </div>
+</div>
+
+<script>
+    const encryptedCode = "NTEyMDA0"; 
+    
+  
+    const titleEnc = [
+    1603,1604,32,1593,1575,1605,32,1608,1575,1606,1578,1610,32,1575,1604,1582,1610,1585,32,1603,1604,1607,32,1610,1575,32,1581,1576,1610,1576,1577,32,1575,1604,1585,1608,1581,32,10084,65039
+    ];
+    
+    const msg1Enc = [
+    1603,1604,32,1593,1575,1605,32,1608,1575,1606,1578,1610,32,1575,1604,1587,1593,1575,1583,1577,32,1608,1575,1604,1601,1585,1581,32,32,
+    1610,1575,1585,1576,32,1603,1604,32,1575,1604,1578,1608,1601,1610,1602,32,1608,1575,1604,1587,1593,1575,1583,1577,32,
+    1608,1610,1575,1585,1576,32,1610,1580,1605,1593,1606,1575,32,1576,1575,1604,1581,1604,1575,1604,32,10,10,
+    128514,32,1593,1584,1585,1610,1606,1610,32,1576,1575,1604,1603,1608,1583,32,1605,1608,32,1602,1608,1610,32,1576,1575,1604,1578,1593,1576,1610,1585
+    ];
+    
+    const msg2Enc = [
+    1594,1583,1575,32,1610,1589,1575,1583,1601,32,1575,1604,1584,1603,1585,1609,32,1575,1604,1605,1605,1610,1586,1577,32,1604,1608,1604,1575,1583,1577,32,
+    1575,1604,1575,1606,1587,1575,1606,1577,32,1575,1604,1580,1605,1610,1604,1577,32,1575,1604,1578,1610,32,1580,1593,1604,1578,32,1581,1610,1575,1578,1610,32,1605,1604,1608,1606,1577,32,
+    1575,1604,1578,1610,32,1608,1590,1593,1578,32,1576,1604,1605,1587,1577,32,1575,1589,1576,1593,32,1603,1604,32,1588,1610,1574,32,1576,1585,1575,1602,32,
+    1608,1580,1605,1610,1604,32,1608,1604,1591,1610,1601,32,1603,1604,32,1610,1608,1605,32,1608,1603,1604,32,1588,1607,1585,32,1608,1603,1604,32,
+    1587,1606,1577,32,1608,1603,1604,32,1583,1602,1610,1602,1577,32,1608,1603,1604,32,10,
+    1604,1581,1590,1577,32,1608,1575,1606,1610,32,1605,1605,1578,1606,32,1604,1608,1580,1608,1583,1580,32,1576,1610,1607,1575,32,1608,1587,1593,1610,1583,32,
+    1576,1610,1580,32,1608,1605,1581,1592,1608,1592,32,1576,1610,1580,32,10,
+    1603,1604,32,1587,1606,1577,32,1608,1575,1606,1578,1610,32,1575,1604,1581,1576,32,1608,1575,1604,1587,1593,1575,1583,1577,32,1608,1575,1604,1601,1585,1581,1577,32,
+    1608,1575,1604,1585,1575,1581,1577,32,1608,1575,1604,1593,1575,1601,1610,1577,32,1608,1575,1604,1575,1605,1575,1606,32,
+    1605,1575,32,1578,1578,1582,1610,1604,1610,1606,32,1575,1606,1610,32,1588,1603,1583,32,1605,1581,1592,1608,1592,32,1576,1610,1580,32,
+    1601,1610,32,1575,1604,1602,1604,1576,32,1575,1588,1610,1575,1569,32,1575,1603,1576,1585,32,1605,1606,32,50,56,32,1581,1585,1601,1575,1611,32,1608,1575,1603,1576,1585,32,1605,1606,32,1575,1604,1575,1601,32,1575,1604,1604,1594,1575,1578
+    ];
+    
+    function decode(arr) {
+      return arr.map(c => String.fromCharCode(c)).join("");
+    }
+    
+    function check() {
+      const input = document.getElementById("code").value;
+      const correct = atob(encryptedCode);
+    
+      if (input === correct) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("love").style.display = "block";
+    
+        document.getElementById("title").innerText = decode(titleEnc);
+        document.getElementById("msg1").innerText  = decode(msg1Enc);
+        document.getElementById("msg2").innerText  = decode(msg2Enc);
+      } else {
+        alert("غلط ورده 👍");
+      }
+    }
+    </script>
+<style>
+    .heart {
+      position: fixed;
+      top: -10px;
+      font-size: 18px;
+      color: rgba(255, 0, 100, 0.6);
+      animation: fall linear forwards;
+      pointer-events: none;
+    }
+    
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+    </style>
+    
+    <script>
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+    
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }, 500);
+    </script>
+</body>
+</html>
